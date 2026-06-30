@@ -2,7 +2,7 @@
 import { useState } from "react";
 import {
   RiDashboardLine,
-  RiDogLine,
+  RiDoorLine,
   RiShoppingBag3Line,
   RiLogoutBoxLine,
   RiMenuLine,
@@ -22,7 +22,7 @@ export const AdminDashboard = ({ onLogout }: Props) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const NAV = [
-    { id: "products" as Tab, label: "Puppies", icon: RiDogLine },
+    { id: "products" as Tab, label: "Puppies", icon: RiDoorLine },
     { id: "orders" as Tab, label: "Orders", icon: RiShoppingBag3Line },
   ];
 

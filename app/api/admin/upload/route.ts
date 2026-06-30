@@ -6,7 +6,7 @@ const getAdmin = () =>
   createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } }
+    { auth: { autoRefreshToken: false, persistSession: false } },
   );
 
 export async function POST(req: NextRequest) {
@@ -26,13 +26,14 @@ export async function POST(req: NextRequest) {
       .upload(fileName, file, { upsert: true });
     if (error) throw error;
 
-    const { data } = admin.storage
-      .from("puppy-images")
-      .getPublicUrl(fileName);
+    const { data } = admin.storage.from("puppy-images").getPublicUrl(fileName);
 
     return NextResponse.json({ url: data.publicUrl });
   } catch (err: any) {
     console.error("Upload error:", err);
-    return NextResponse.json({ error: err.message || "Upload failed" }, { status: 500 });
+    return NextResponse.json(
+      { error: err.message || "Upload failed" },
+      { status: 500 },
+    );
   }
 }
