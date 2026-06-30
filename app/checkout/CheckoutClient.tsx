@@ -16,7 +16,14 @@ import { CheckoutFormData } from "@/types";
 import { formatPrice } from "@/utils/helpers";
 import toast from "react-hot-toast";
 
-const PAYMENT_OPTIONS = [
+type PaymentOption = {
+  value: string;
+  label: string;
+  icon: any;
+  desc?: string;
+};
+
+const PAYMENT_OPTIONS: readonly PaymentOption[] = [
   {
     value: "paypal",
     label: "PayPal",
@@ -126,135 +133,12 @@ export const CheckoutClient = () => {
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Left — Form */}
             <div className="lg:col-span-2 space-y-6">
-              {/* Personal Info */}
-              <div className="card p-6">
-                <h2 className="font-display font-semibold text-warm-900 text-xl mb-5">
-                  Personal Information
-                </h2>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="sm:col-span-2">
-                    <label className="text-xs font-semibold text-warm-600 block mb-1.5">
-                      Full Name *
-                    </label>
-                    <input
-                      name="customer_name"
-                      value={form.customer_name}
-                      onChange={handleChange}
-                      required
-                      placeholder="John Doe"
-                      className="input"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-semibold text-warm-600 block mb-1.5">
-                      Email Address *
-                    </label>
-                    <input
-                      name="customer_email"
-                      type="email"
-                      value={form.customer_email}
-                      onChange={handleChange}
-                      required
-                      placeholder="john@example.com"
-                      className="input"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-semibold text-warm-600 block mb-1.5">
-                      Phone Number *
-                    </label>
-                    <input
-                      name="customer_phone"
-                      type="tel"
-                      value={form.customer_phone}
-                      onChange={handleChange}
-                      required
-                      placeholder="+1 (555) 000-0000"
-                      className="input"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Shipping */}
-              <div className="card p-6">
-                <h2 className="font-display font-semibold text-warm-900 text-xl mb-5">
-                  Shipping Address
-                </h2>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="sm:col-span-2">
-                    <label className="text-xs font-semibold text-warm-600 block mb-1.5">
-                      Street Address *
-                    </label>
-                    <input
-                      name="street"
-                      value={form.street}
-                      onChange={handleChange}
-                      required
-                      placeholder="123 Main Street, Apt 4"
-                      className="input"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-semibold text-warm-600 block mb-1.5">
-                      City *
-                    </label>
-                    <input
-                      name="city"
-                      value={form.city}
-                      onChange={handleChange}
-                      required
-                      placeholder="New York"
-                      className="input"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-semibold text-warm-600 block mb-1.5">
-                      State / Province *
-                    </label>
-                    <input
-                      name="state"
-                      value={form.state}
-                      onChange={handleChange}
-                      required
-                      placeholder="NY"
-                      className="input"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-semibold text-warm-600 block mb-1.5">
-                      ZIP / Postal Code *
-                    </label>
-                    <input
-                      name="zip"
-                      value={form.zip}
-                      onChange={handleChange}
-                      required
-                      placeholder="10001"
-                      className="input"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-semibold text-warm-600 block mb-1.5">
-                      Country *
-                    </label>
-                    <input
-                      name="country"
-                      value={form.country}
-                      onChange={handleChange}
-                      required
-                      placeholder="United States"
-                      className="input"
-                    />
-                  </div>
-                </div>
-              </div>
-
               {/* Payment */}
               <div className="card p-6">
                 <h2 className="font-display font-semibold text-warm-900 text-xl mb-5">
                   Payment Method
                 </h2>
+
                 <div className="grid sm:grid-cols-3 gap-3">
                   {PAYMENT_OPTIONS.map(({ value, label, icon: Icon, desc }) => (
                     <label
@@ -273,15 +157,28 @@ export const CheckoutClient = () => {
                         onChange={handleChange}
                         className="sr-only"
                       />
+
                       <Icon
-                        className={`w-6 h-6 ${form.payment_method === value ? "text-brand-600" : "text-warm-400"}`}
+                        className={`w-6 h-6 ${
+                          form.payment_method === value
+                            ? "text-brand-600"
+                            : "text-warm-400"
+                        }`}
                       />
+
                       <span
-                        className={`font-semibold text-sm ${form.payment_method === value ? "text-brand-700" : "text-warm-700"}`}
+                        className={`font-semibold text-sm ${
+                          form.payment_method === value
+                            ? "text-brand-700"
+                            : "text-warm-700"
+                        }`}
                       >
                         {label}
                       </span>
-                      <span className="text-xs text-warm-400">{desc}</span>
+
+                      {desc && (
+                        <span className="text-xs text-warm-400">{desc}</span>
+                      )}
                     </label>
                   ))}
                 </div>
@@ -310,56 +207,18 @@ export const CheckoutClient = () => {
                   Order Summary
                 </h2>
 
-                <div className="space-y-3 mb-5">
-                  {items.map(({ puppy }) => (
-                    <div key={puppy.id} className="flex gap-3">
-                      <div className="relative w-14 h-14 rounded-xl overflow-hidden shrink-0 bg-warm-100">
-                        <Image
-                          src={puppy.image_url}
-                          alt={puppy.name}
-                          fill
-                          className="object-cover"
-                          sizes="56px"
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-warm-900 text-sm truncate">
-                          {puppy.name}
-                        </p>
-                        <p className="text-warm-500 text-xs">{puppy.breed}</p>
-                        <p className="text-brand-600 font-bold text-sm">
-                          {formatPrice(puppy.price)}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
                 <div className="border-t border-warm-100 pt-4 space-y-2 text-sm">
                   <div className="flex justify-between text-warm-600">
                     <span>Subtotal</span>
                     <span>{formatPrice(totalPrice)}</span>
                   </div>
-                  <div className="flex justify-between text-warm-600">
-                    <span>Shipping</span>
-                    <span
-                      className={
-                        shippingCost === 0 ? "text-green-600 font-medium" : ""
-                      }
-                    >
-                      {shippingCost === 0 ? "FREE" : formatPrice(shippingCost)}
-                    </span>
-                  </div>
-                  {shippingCost === 0 && (
-                    <p className="text-green-600 text-xs">
-                      Free shipping on orders over $3,000
-                    </p>
-                  )}
+
                   <div className="flex justify-between font-bold text-warm-900 text-lg pt-2 border-t border-warm-100">
                     <span>Total</span>
                     <span>{formatPrice(grandTotal)}</span>
                   </div>
                 </div>
+
                 <button
                   type="submit"
                   disabled={submitting}

@@ -10,17 +10,22 @@ const getAdmin = () =>
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
+
     const body = await req.json();
+
     const { data, error } = await getAdmin()
       .from("puppies")
       .update(body)
-      .eq("id", params.id)
+      .eq("id", id)
       .select()
       .single();
+
     if (error) throw error;
+
     return NextResponse.json({ puppy: data });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
@@ -29,14 +34,18 @@ export async function PATCH(
 
 export async function DELETE(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
+
     const { error } = await getAdmin()
       .from("puppies")
       .delete()
-      .eq("id", params.id);
+      .eq("id", id);
+
     if (error) throw error;
+
     return NextResponse.json({ success: true });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });

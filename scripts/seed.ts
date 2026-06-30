@@ -11,6 +11,7 @@ import { createClient } from "@supabase/supabase-js";
 import { MOCK_PUPPIES } from "../utils/mockData";
 
 import { v4 as uuidv4 } from "uuid";
+import { supabase } from "@/lib/supabase/client";
 
 // const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 // const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -30,8 +31,7 @@ const seed = async () => {
     updated_at: now,
   }));
 
-  const { error } = await supabase
-    .from("puppies")
+  const { error } = await supabase    .from("puppies")
     .upsert(records, { onConflict: "id" });
 
   if (error) {

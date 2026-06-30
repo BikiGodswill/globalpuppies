@@ -34,7 +34,14 @@ export const orderService = {
   },
 
   create: async (
-    orderData: Omit<Order, "id" | "tracking_number" | "tracking_updates" | "created_at" | "updated_at">
+    orderData: Omit<
+      Order,
+      | "id"
+      | "tracking_number"
+      | "tracking_updates"
+      | "created_at"
+      | "updated_at"
+    >,
   ): Promise<Order> => {
     const res = await fetch("/api/orders", {
       method: "POST",
@@ -50,7 +57,7 @@ export const orderService = {
     id: string,
     status: OrderStatus,
     message: string,
-    location?: string
+    location?: string,
   ): Promise<Order> => {
     const res = await fetch(`/api/orders/${id}`, {
       method: "PATCH",

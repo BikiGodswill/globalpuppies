@@ -36,7 +36,7 @@ export const puppyService = {
   // ─── ADMIN WRITES — go through API routes (server-side only) ───────────────
 
   create: async (
-    puppy: Omit<Puppy, "id" | "created_at" | "updated_at">
+    puppy: Omit<Puppy, "id" | "created_at" | "updated_at">,
   ): Promise<Puppy> => {
     const res = await fetch("/api/products", {
       method: "POST",

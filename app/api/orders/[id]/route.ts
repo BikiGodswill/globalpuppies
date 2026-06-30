@@ -11,15 +11,21 @@ const getAdmin = () =>
 
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
+
     const { data, error } = await getAdmin()
       .from("orders")
       .select("*")
-      .eq("id", params.id)
+      .eq("id", id)
       .single();
-    if (error) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+    if (error) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+
     return NextResponse.json({ order: data });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
@@ -28,17 +34,20 @@ export async function GET(
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
+
     const { status, message, location } = await req.json();
     const admin = getAdmin();
 
     const { data: existing, error: fetchError } = await admin
       .from("orders")
       .select("tracking_updates")
-      .eq("id", params.id)
+      .eq("id", id)
       .single();
+
     if (fetchError) throw fetchError;
 
     const newUpdate = {
@@ -55,11 +64,12 @@ export async function PATCH(
         order_status: status,
         tracking_updates: [...(existing.tracking_updates || []), newUpdate],
       })
-      .eq("id", params.id)
+      .eq("id", id)
       .select()
       .single();
 
     if (error) throw error;
+
     return NextResponse.json({ order: data });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });

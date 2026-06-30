@@ -12,9 +12,10 @@ import { formatPrice } from "@/utils/helpers";
 interface CartDrawerProps {
   isOpen: boolean;
   onClose: () => void;
+  className?: string;
 }
 
-export const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
+export const CartDrawer = ({ isOpen, onClose, className }: CartDrawerProps) => {
   const { items, removeItem, totalPrice, totalItems } = useCart();
 
   return (
