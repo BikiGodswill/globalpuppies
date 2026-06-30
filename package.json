@@ -1,0 +1,36 @@
+{
+  "name": "globalpuppies",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "@tanstack/react-query": "^5.56.0",
+    "@tanstack/react-query-devtools": "^5.56.0",
+    "axios": "^1.7.7",
+    "next": "15.0.3",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-hot-toast": "^2.4.1",
+    "react-icons": "^5.3.0",
+    "nodemailer": "^6.9.15",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "@types/nodemailer": "^6.4.16",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/uuid": "^10.0.0",
+    "eslint": "^8",
+    "eslint-config-next": "15.0.3",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5"
+  }
+}
